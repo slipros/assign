@@ -1,0 +1,36 @@
+title: assign
+description: A powerful Go library for type conversion and value assignment
+theme: minima
+url: "https://slipros.github.io"
+baseurl: "/assign"
+
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+navigation:
+  - title: Home
+    url: /
+  - title: API Reference
+    url: /api
+  - title: Examples
+    url: /examples
+  - title: GitHub
+    url: https://github.com/slipros/assign
+
+social:
+  github: slipros/assign
+
+exclude:
+  - node_modules
+  - vendor
+  - .bundle
+  - .sass-cache
+  - Gemfile
+  - Gemfile.lock
