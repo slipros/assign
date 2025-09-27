@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>assign - Go Type Conversion Library</title>
+    <style>
+        :root {
+            --primary-color: #00a8ff;
+            --secondary-color: #7f8c8d;
+            --background-color: #f8f9fa;
+            --text-color: #2c3e50;
+            --code-background: #f4f4f4;
+            --border-color: #e1e5e9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #0097e6);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+        }
+
+        .badge img {
+            height: 20px;
+        }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #0097e6;
+        }
+
+        main {
+            padding: 4rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: var(--code-background);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 0;
+            background: none;
+            border: none;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            background: none;
+            padding: 0;
+            border: none;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .api-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .function-signature {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .function-signature pre {
+            margin: 0;
+            padding: 0;
+            background: none;
+            border: none;
+            overflow-x: auto;
+        }
+
+        .function-signature code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            background: none;
+            padding: 0;
+            border: none;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: var(--text-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="hero">
+                <h1>assign</h1>
+                <p>A powerful Go library for type conversion and value assignment with automatic type conversion</p>
+                <div class="badges">
+                    <div class="badge">
+                        <a href="https://pkg.go.dev/github.com/slipros/assign">
+                            <img src="https://pkg.go.dev/badge/github.com/slipros/assign.svg" alt="Go Reference">
+                        </a>
+                    </div>
+                    <div class="badge">
+                        <a href="https://goreportcard.com/report/github.com/slipros/assign">
+                            <img src="https://goreportcard.com/badge/github.com/slipros/assign" alt="Go Report Card">
+                        </a>
+                    </div>
+                    <div class="badge">
+                        <a href="https://coveralls.io/github/slipros/assign">
+                            <img src="https://coveralls.io/repos/github/slipros/assign/badge.svg" alt="Coverage Status">
+                        </a>
+                    </div>
+                    <div class="badge">
+                        <a href="https://opensource.org/licenses/MIT">
+                            <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License">
+                        </a>
+                    </div>
+                    <div class="badge">
+                        <a href="https://golang.org/doc/devel/release.html">
+                            <img src="https://img.shields.io/github/go-mod/go-version/slipros/assign" alt="Go Version">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#quickstart">Quick Start</a></li>
+                    <li><a href="#api">API Reference</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                </ul>
+                <a href="https://pkg.go.dev/github.com/slipros/assign" class="btn">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="features" class="section">
+                <h2>Features</h2>
+                <div class="grid">
+                    <div class="feature-card">
+                        <h3>🔄 Automatic Type Conversion</h3>
+                        <p>Seamlessly convert between compatible types like string ↔ int, float ↔ string, and more with intelligent conversion logic.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🛡️ Type Safety</h3>
+                        <p>Leverage Go 1.18+ generics with type constraints for compile-time safety and better performance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎯 Nil Pointer Handling</h3>
+                        <p>Automatically initialize nil pointers when needed, eliminating common runtime panics.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔌 Interface Support</h3>
+                        <p>Built-in support for TextUnmarshaler and BinaryUnmarshaler interfaces for custom types.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ High Performance</h3>
+                        <p>Optimized fast paths for common type conversions with zero allocations for primitive types.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔧 Extensible</h3>
+                        <p>Add custom type converters through extension functions for specialized conversion needs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quickstart" class="section">
+                <h2>Quick Start</h2>
+                <p>Get started with assign in minutes:</p>
+
+                <div class="code-block"><pre><code>go get github.com/slipros/assign@latest</code></pre></div>
+
+                <div class="code-block"><pre><code>package main
+
+import (
+    "fmt"
+    "reflect"
+    "time"
+    "github.com/slipros/assign"
+)
+
+type User struct {
+    ID       int       `json:"id"`
+    Name     string    `json:"name"`
+    Age      int       `json:"age"`
+    IsActive bool      `json:"is_active"`
+    JoinedAt time.Time `json:"joined_at"`
+    Scores   []int     `json:"scores"`
+}
+
+func main() {
+    var user User
+    v := reflect.ValueOf(&user).Elem()
+
+    // Convert various types automatically
+    if err := assign.Value(v.FieldByName("ID"), "123"); err != nil {
+        panic(err)
+    }
+    if err := assign.Value(v.FieldByName("Name"), "John Doe"); err != nil {
+        panic(err)
+    }
+    if err := assign.Value(v.FieldByName("Age"), "30"); err != nil {
+        panic(err)
+    }
+    if err := assign.Value(v.FieldByName("IsActive"), "true"); err != nil {
+        panic(err)
+    }
+    if err := assign.Value(v.FieldByName("JoinedAt"), "2023-01-15T10:30:00Z"); err != nil {
+        panic(err)
+    }
+    if err := assign.SliceString(v.FieldByName("Scores"), []string{"85", "92", "78"}); err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("User: %+v\n", user)
+}</code></pre></div>
+            </section>
+
+            <section id="api" class="section">
+                <h2>API Reference</h2>
+
+                <div class="api-section">
+                    <h3>Core Functions</h3>
+
+                    <h4>Value - Universal Assignment</h4>
+                    <div class="function-signature">
+func Value(to reflect.Value, from any, extensions ...ExtensionFunc) error
+                    </div>
+                    <p>The primary entry point for type conversion and assignment. Handles nil pointer initialization, various primitive types, and interfaces with automatic type conversion.</p>
+
+                    <h4>Integer - Numeric Type Conversion</h4>
+                    <div class="function-signature">
+func Integer[I IntegerValue](to reflect.Value, from I) error
+                    </div>
+                    <p>Converts integer values with overflow protection and range checking for all integer types.</p>
+
+                    <h4>Float - Floating Point Conversion</h4>
+                    <div class="function-signature">
+func Float[F FloatValue](to reflect.Value, from F) error
+                    </div>
+                    <p>Handles floating-point conversions with special value support (NaN, Infinity).</p>
+
+                    <h4>String - Text Conversion</h4>
+                    <div class="function-signature">
+func String(to reflect.Value, from string) error
+                    </div>
+                    <p>Optimized string parsing with fast paths for common type conversions.</p>
+
+                    <h4>SliceString - Array and Slice Conversion</h4>
+                    <div class="function-signature">
+func SliceString(to reflect.Value, from []string, options ...SliceOptionFunc) error
+                    </div>
+                    <p>Convert string slices to various types with configurable separators.</p>
+                </div>
+
+                <div class="api-section">
+                    <h3>Type Constraints</h3>
+                    <div class="function-signature"><pre><code>type SignedValue interface {
+    ~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+
+type UnsignedValue interface {
+    ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
+
+type IntegerValue interface {
+    SignedValue | UnsignedValue
+}
+
+type FloatValue interface {
+    ~float32 | ~float64
+}</code></pre></div>
+                </div>
+            </section>
+
+            <section id="examples" class="section">
+                <h2>Examples</h2>
+
+                <h3>Basic Type Conversion</h3>
+                <div class="code-block"><pre><code>var target int
+field := reflect.ValueOf(&target).Elem()
+
+// Convert from various types
+if err := assign.Value(field, "42"); err != nil {   // string to int
+    panic(err)
+}
+if err := assign.Value(field, 3.14); err != nil {  // float to int
+    panic(err)
+}
+if err := assign.Value(field, true); err != nil {  // bool to int (true = 1)
+    panic(err)
+}</code></pre></div>
+
+                <h3>Slice Operations</h3>
+                <div class="code-block"><pre><code>var intSlice []int
+var joinedString string
+
+field1 := reflect.ValueOf(&intSlice).Elem()
+field2 := reflect.ValueOf(&joinedString).Elem()
+
+// String slice to int slice
+if err := assign.SliceString(field1, []string{"1", "2", "3", "4"}); err != nil {
+    panic(err)
+}
+
+// String slice to joined string with custom separator
+if err := assign.SliceString(field2, []string{"a", "b", "c"}, assign.WithSeparator(" | ")); err != nil {
+    panic(err)
+}</code></pre></div>
+
+                <h3>Time Parsing</h3>
+                <div class="code-block"><pre><code>var timestamp time.Time
+field := reflect.ValueOf(&timestamp).Elem()
+
+// Supports multiple formats automatically
+if err := assign.String(field, "2023-01-15T10:30:00Z"); err != nil {       // RFC3339
+    panic(err)
+}
+if err := assign.String(field, "2023-01-15"); err != nil {                 // Date only
+    panic(err)
+}
+if err := assign.String(field, "01/15/2023"); err != nil {                 // US format
+    panic(err)
+}
+if err := assign.String(field, "2023-01-15 10:30:00"); err != nil {        // DateTime
+    panic(err)
+}</code></pre></div>
+
+                <h3>Extension Functions</h3>
+                <div class="code-block"><pre><code>import (
+    "net/http"
+    "reflect"
+    "github.com/slipros/assign"
+)
+
+// Extension function for HTTP Cookie conversion
+func cookieExtension(value any) (func(to reflect.Value) error, bool) {
+    cookie, ok := value.(*http.Cookie)
+    if !ok {
+        return nil, false
+    }
+
+    return func(to reflect.Value) error {
+        return assign.String(to, cookie.Value)
+    }, true
+}
+
+// Usage
+cookie := &amp;http.Cookie{Name: "session", Value: "abc123"}
+var sessionID string
+field := reflect.ValueOf(&amp;sessionID).Elem()
+
+if err := assign.Value(field, cookie, cookieExtension); err != nil {
+    panic(err)
+}
+// sessionID now contains "abc123"</code></pre></div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/slipros/assign">GitHub</a>
+                <a href="https://pkg.go.dev/github.com/slipros/assign">Documentation</a>
+                <a href="https://github.com/slipros/assign/issues">Issues</a>
+                <a href="https://github.com/slipros/assign/blob/main/LICENSE">License</a>
+            </div>
+            <p>&copy; 2024 assign. Released under the MIT License.</p>
+        </div>
+    </footer>
+</body>
+</html>
